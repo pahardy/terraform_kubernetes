@@ -17,11 +17,7 @@ provider "aws" {
 }
 
 provider "kubernetes" {
-  config_path = "~/.kube/config"
-  host = "https://${data.aws_eks_cluster.existing-eks-cluster.endpoint}"
-  exec {
-    api_version = "client.authentication.k8s.io/v1beta1"
-    args        = ["eks", "get-token", "--cluster-name", data.aws_eks_cluster.existing-eks-cluster.id]
-    command     = "aws"
-  }
+  host = data.terraform_remote_state.existing-eks-cluster.outputs.cluster_endpoint
+  cluster_ca_certificate = base64decode(data.terraform_remote_state.existing-eks-cluster.outputs.cluster_certificate_authority_data)
+  token = data.aws_eks_cluster_auth.my-cluster.token
 }
