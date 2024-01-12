@@ -2,7 +2,8 @@
 data "terraform_remote_state" "existing-eks-cluster" {
   backend = "local"
   config = {
-    path = "terraform.tfstate"
+    path = "../../first_eks_cluster/terraform.tfstate"
+
    }
 }
 
